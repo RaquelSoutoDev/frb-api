@@ -6,7 +6,7 @@ import "./style.css";
 function App() {
   return (
     <div className="texto-prueba">
-      <p>Menos Cachitas y Más Cucharitas</p>
+      <p>Menos Cachitas y Más Cucharitas.</p>
     </div>
   );
 }
