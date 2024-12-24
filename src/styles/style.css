@@ -124,6 +124,26 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+.formulario_li .partido-info p {
+    margin: 5px 0;
+  }
+  
+  .formulario_li input,
+  .formulario_li select {
+    font-size: inherit;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    background: transparent;
+    outline: none;
+    padding: 2px;
+    width: auto;
+  }
+  
+  .formulario_li input:focus,
+  .formulario_li select:focus {
+    border-bottom: 1px solid #007bff;
+  }
+  
 
 /* Responsividad para móviles */
 @media (max-width: 768px) {

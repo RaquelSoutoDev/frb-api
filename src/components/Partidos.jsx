@@ -1,29 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { eliminarPartido, getPartidos, editarPartido } from "../api/api";
 import FormPartido from "./FormPartido";
-import EditForm from "./EditForm";
+import EditablePartido from "./EditablePartido";
 
 const Partidos = () => {
   const [partidos, setPartidos] = useState([]);
-  const [filteredPartidos, setFilteredPartidos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [editMode, setEditMode] = useState(false);
-  const [currentPartido, setCurrentPartido] = useState(null);
-
-  // Estado para filtros
   const [filtros, setFiltros] = useState({
     estado: "",
     tipo_partido: "",
     equipo: "",
     fecha: "",
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPartidos = async () => {
       try {
         const data = await getPartidos();
         setPartidos(data);
-        setFilteredPartidos(data);
       } catch (error) {
         console.error("Error al obtener los partidos:", error);
       } finally {
@@ -39,7 +33,6 @@ const Partidos = () => {
       try {
         await eliminarPartido(id);
         setPartidos((prev) => prev.filter((partido) => partido.id !== id));
-        setFilteredPartidos((prev) => prev.filter((partido) => partido.id !== id));
         alert("Partido eliminado con éxito");
       } catch (error) {
         console.error("Error al eliminar el partido:", error);
@@ -48,31 +41,17 @@ const Partidos = () => {
     }
   };
 
-  const handleEditClick = (partido) => {
-    setEditMode(true);
-    setCurrentPartido(partido);
-  };
-
-  const handleCancelEdit = () => {
-    setEditMode(false);
-    setCurrentPartido(null);
-  };
-
-  const handleEditSubmit = async (updatePartido) => {
+  const handleEditSubmit = async (updatedPartido) => {
     try {
-      const partidoEditado = await editarPartido(updatePartido.id, updatePartido);
+      const partidoEditado = await editarPartido(
+        updatedPartido.id,
+        updatedPartido
+      );
       setPartidos((prev) =>
         prev.map((partido) =>
           partido.id === partidoEditado.id ? partidoEditado : partido
         )
       );
-      setFilteredPartidos((prev) =>
-        prev.map((partido) =>
-          partido.id === partidoEditado.id ? partidoEditado : partido
-        )
-      );
-      setEditMode(false);
-      setCurrentPartido(null);
       alert("Partido editado con éxito");
     } catch (error) {
       console.error("Error al editar el partido:", error);
@@ -83,20 +62,6 @@ const Partidos = () => {
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFiltros((prev) => ({ ...prev, [name]: value }));
-
-    // Aplicar los filtros dinámicamente
-    const partidosFiltrados = partidos.filter((partido) => {
-      const matchEstado = !filtros.estado || partido.estado === value;
-      const matchTipo = !filtros.tipo_partido || partido.tipo_partido === value;
-      const matchEquipo =
-        !filtros.equipo ||
-        partido.equipo_1.includes(value) ||
-        partido.equipo_2.includes(value);
-      const matchFecha = !filtros.fecha || partido.fecha.startsWith(value);
-      return matchEstado && matchTipo && matchEquipo && matchFecha;
-    });
-
-    setFilteredPartidos(partidosFiltrados);
   };
 
   const handleResetFiltros = () => {
@@ -106,20 +71,21 @@ const Partidos = () => {
       equipo: "",
       fecha: "",
     });
-    setFilteredPartidos(partidos);
   };
 
-  const formatDate = (fecha) => {
-    const date = new Date(fecha);
-    const options = {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return date.toLocaleDateString("es-ES", options);
-  };
+  const filteredPartidos = useMemo(() => {
+    return partidos.filter((partido) => {
+      const matchEstado = !filtros.estado || partido.estado === filtros.estado;
+      const matchTipo =
+        !filtros.tipo_partido || partido.tipo_partido === filtros.tipo_partido;
+      const matchEquipo =
+        !filtros.equipo ||
+        partido.equipo_1.toLowerCase().includes(filtros.equipo.toLowerCase()) ||
+        partido.equipo_2.toLowerCase().includes(filtros.equipo.toLowerCase());
+      const matchFecha = !filtros.fecha || partido.fecha.startsWith(filtros.fecha);
+      return matchEstado && matchTipo && matchEquipo && matchFecha;
+    });
+  }, [partidos, filtros]);
 
   if (loading) {
     return <p>Cargando partidos...</p>;
@@ -129,16 +95,8 @@ const Partidos = () => {
     <div className="contenedor-principal">
       <div className="contenedor-izquierda">
         <div className="contenedor-formulario">
-        <h3>Crear/Editar</h3>
-          {editMode ? (
-            <EditForm
-              partido={currentPartido}
-              onCancel={handleCancelEdit}
-              onSubmit={handleEditSubmit}
-            />
-          ) : (
-            <FormPartido setPartidos={setPartidos} />
-          )}
+          <h3>Crear Partido</h3>
+          <FormPartido setPartidos={setPartidos} />
         </div>
 
         <div className="contenedor-filtros">
@@ -151,7 +109,11 @@ const Partidos = () => {
             <option value="Cancelado">Cancelado</option>
           </select>
 
-          <select name="tipo_partido" value={filtros.tipo_partido} onChange={handleFilterChange}>
+          <select
+            name="tipo_partido"
+            value={filtros.tipo_partido}
+            onChange={handleFilterChange}
+          >
             <option value="">Todos los tipos</option>
             <option value="Amistoso">Amistoso</option>
             <option value="Liga-IMD">Liga-IMD</option>
@@ -181,18 +143,12 @@ const Partidos = () => {
         <h2 className="app_h2">Partidos</h2>
         <ul>
           {filteredPartidos.map((partido) => (
-            <li key={partido.id} className="formulario_li">
-              <p className="host-grotesk-bold">
-                {partido.equipo_1} vs {partido.equipo_2}
-              </p>
-              <p>Estado: {partido.estado}</p>
-              <p>Fecha: {formatDate(partido.fecha)}</p>
-              <p>Resultado: {partido.resultado_equipo_1}-{partido.resultado_equipo_2}</p>
-              <div className="contenedor-button">
-                <button onClick={() => handleEditClick(partido)}>Editar</button>
-                <button onClick={() => handleEliminar(partido.id)}>Eliminar</button>
-              </div>
-            </li>
+            <EditablePartido
+              key={partido.id}
+              partido={partido}
+              onUpdate={handleEditSubmit}
+              onDelete={handleEliminar}
+            />
           ))}
         </ul>
       </div>
