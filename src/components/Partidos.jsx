@@ -17,7 +17,7 @@ const Partidos = () => {
     const fetchPartidos = async () => {
       try {
         const data = await getPartidos();
-        setPartidos(data);
+        setPartidos(data); // No se ajustan las fechas, se guardan tal cual
       } catch (error) {
         console.error("Error al obtener los partidos:", error);
       } finally {
@@ -43,10 +43,7 @@ const Partidos = () => {
 
   const handleEditSubmit = async (updatedPartido) => {
     try {
-      const partidoEditado = await editarPartido(
-        updatedPartido.id,
-        updatedPartido
-      );
+      const partidoEditado = await editarPartido(updatedPartido.id, updatedPartido);
       setPartidos((prev) =>
         prev.map((partido) =>
           partido.id === partidoEditado.id ? partidoEditado : partido
@@ -101,7 +98,11 @@ const Partidos = () => {
 
         <div className="contenedor-filtros">
           <h3>Filtros</h3>
-          <select name="estado" value={filtros.estado} onChange={handleFilterChange}>
+          <select
+            name="estado"
+            value={filtros.estado}
+            onChange={handleFilterChange}
+          >
             <option value="">Todos los estados</option>
             <option value="Jugado">Jugado</option>
             <option value="Pendiente">Pendiente</option>
@@ -140,7 +141,7 @@ const Partidos = () => {
       </div>
 
       <div className="contenedor-lista">
-        <h2 className="app_h2">Partidos</h2>
+        <h2>Partidos</h2>
         <ul>
           {filteredPartidos.map((partido) => (
             <EditablePartido

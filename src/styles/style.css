@@ -1,13 +1,13 @@
 /* Font */
-@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap");
 
 body {
-    font-family: "Host Grotesk", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    margin: 0;
-    padding: 0;
+  font-family: "Host Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
 }
 
 .app_h1,
@@ -17,78 +17,78 @@ body {
 }
 
 .host-grotesk-bold {
-    font-weight: 600;
+  font-weight: 600;
 }
 .host-grotesk-italic {
-    font-style: italic;  
+  font-style: italic;
 }
 
 /* Contenedor principal para el diseño flex */
 .contenedor-principal {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px; 
-    margin: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin: 20px;
 }
 
 /* Contenedor del formulario */
 .contenedor-formulario {
-    flex: 1;
-    max-width: 400px; 
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  max-width: 400px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Contenedor de los filtros */
 .contenedor-filtros {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .contenedor-filtros form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .contenedor-filtros input,
 .contenedor-filtros select,
 .contenedor-filtros button {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 /* Contenedor de la lista de partidos */
 .contenedor-lista {
-    flex: 2;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 2;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .contenedor-lista ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .formulario_li {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
 .contenedor-button {
@@ -98,69 +98,90 @@ body {
 
 /* Formulario interno */
 .Formulario {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-input, select, button {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+input,
+select,
+button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 /* Botones generales */
 button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 .formulario_li .partido-info p {
-    margin: 5px 0;
-  }
-  
-  .formulario_li input,
-  .formulario_li select {
-    font-size: inherit;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    background: transparent;
-    outline: none;
-    padding: 2px;
-    width: auto;
-  }
-  
-  .formulario_li input:focus,
-  .formulario_li select:focus {
-    border-bottom: 1px solid #007bff;
-  }
-  
+  margin: 5px 0;
+}
+
+.formulario_li input,
+.formulario_li select {
+  font-size: inherit;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: transparent;
+  outline: none;
+  padding: 2px;
+  width: auto;
+}
+
+.formulario_li input:focus,
+.formulario_li select:focus {
+  border-bottom: 1px solid #007bff;
+}
 
 /* Responsividad para móviles */
 @media (max-width: 768px) {
-    .contenedor-principal {
-        flex-direction: column;
-        align-items: center;
-    }
+  .contenedor-principal {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .contenedor-formulario,
-    .contenedor-lista,
-    .contenedor-filtros {
-        max-width: 100%;
-        margin: 10px 0;
-    }
+  .contenedor-formulario,
+  .contenedor-lista,
+  .contenedor-filtros {
+    max-width: 100%;
+    margin: 10px 0;
+  }
 
-    .contenedor-filtros form {
-        flex-direction: column;
-    }
+  .contenedor-filtros form {
+    flex-direction: column;
+  }
+}
+input[type="datetime-local"] {
+  width: 100%; 
+  box-sizing: border-box; 
+  padding: 10px; 
+  font-size: 16px;
+}
 
+@media (max-width: 768px) {
+  input[type="datetime-local"] {
+    font-size: 14px; 
+  }
+
+  .formulario_li {
+    display: flex;
+    flex-direction: column; 
+  }
+
+  .contenedor-button button {
+    width: 100%; 
+  }
 }

@@ -6,6 +6,7 @@ const API = axios.create({
 
 export const getPartidos = async () => {
   const response = await API.get("/partidos");
+  console.log("Datos obtenidos del backend:", response.data);
   return response.data;
 };
 

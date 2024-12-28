@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const EditablePartido = ({ partido, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedPartido, setEditedPartido] = useState(partido);
+  const [editedPartido, setEditedPartido] = useState({ ...partido });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,40 +16,64 @@ const EditablePartido = ({ partido, onUpdate, onDelete }) => {
   };
 
   const handleCancel = () => {
-    setEditedPartido(partido); 
+    setEditedPartido({ ...partido });
     setIsEditing(false);
   };
 
   return (
     <li className="formulario_li">
-      <div className="partido-info">
-        <p>
-          <strong>Equipos:</strong>{" "}
-          {isEditing ? (
-            <>
-              <input
-                type="text"
-                name="equipo_1"
-                value={editedPartido.equipo_1}
-                onChange={handleChange}
-                required
-              />
-              {" vs "}
-              <input
-                type="text"
-                name="equipo_2"
-                value={editedPartido.equipo_2}
-                onChange={handleChange}
-                required
-              />
-            </>
-          ) : (
-            `${partido.equipo_1} vs ${partido.equipo_2}`
-          )}
-        </p>
-        <p>
-          <strong>Estado:</strong>{" "}
-          {isEditing ? (
+      {isEditing ? (
+        <>
+          <p>
+            <strong>Local:</strong>{" "}
+            <input
+              type="text"
+              name="equipo_1"
+              value={editedPartido.equipo_1}
+              onChange={handleChange}
+              required
+            />
+          </p>
+          <p>
+            <strong>Visitante:</strong>{" "}
+            <input
+              type="text"
+              name="equipo_2"
+              value={editedPartido.equipo_2}
+              onChange={handleChange}
+              required
+            />
+          </p>
+          <p>
+            <strong>Resultado Local:</strong>{" "}
+            <input
+              type="number"
+              name="resultado_equipo_1"
+              value={editedPartido.resultado_equipo_1 || ""}
+              onChange={handleChange}
+            />
+          </p>
+          <p>
+            <strong>Resultado Visitante:</strong>{" "}
+            <input
+              type="number"
+              name="resultado_equipo_2"
+              value={editedPartido.resultado_equipo_2 || ""}
+              onChange={handleChange}
+            />
+          </p>
+          <p>
+            <strong>Fecha:</strong>{" "}
+            <input
+              type="datetime-local"
+              name="fecha"
+              value={editedPartido.fecha.slice(0, 16)} 
+              onChange={handleChange}
+              required
+            />
+          </p>
+          <p>
+            <strong>Estado:</strong>{" "}
             <select
               name="estado"
               value={editedPartido.estado}
@@ -61,27 +85,9 @@ const EditablePartido = ({ partido, onUpdate, onDelete }) => {
               <option value="Pospuesto">Pospuesto</option>
               <option value="Cancelado">Cancelado</option>
             </select>
-          ) : (
-            partido.estado
-          )}
-        </p>
-        <p>
-          <strong>Fecha:</strong>{" "}
-          {isEditing ? (
-            <input
-              type="datetime-local"
-              name="fecha"
-              value={editedPartido.fecha}
-              onChange={handleChange}
-              required
-            />
-          ) : (
-            new Date(partido.fecha).toLocaleString("es-ES")
-          )}
-        </p>
-        <p>
-          <strong>Tipo:</strong>{" "}
-          {isEditing ? (
+          </p>
+          <p>
+            <strong>Tipo de Partido:</strong>{" "}
             <select
               name="tipo_partido"
               value={editedPartido.tipo_partido}
@@ -92,47 +98,45 @@ const EditablePartido = ({ partido, onUpdate, onDelete }) => {
               <option value="Liga-IMD">Liga-IMD</option>
               <option value="Torneo">Torneo</option>
             </select>
-          ) : (
-            partido.tipo_partido
-          )}
-        </p>
-        <p>
-          <strong>Resultado:</strong>{" "}
-          {isEditing ? (
-            <>
-              <input
-                type="number"
-                name="resultado_equipo_1"
-                value={editedPartido.resultado_equipo_1}
-                onChange={handleChange}
-              />
-              {" - "}
-              <input
-                type="number"
-                name="resultado_equipo_2"
-                value={editedPartido.resultado_equipo_2}
-                onChange={handleChange}
-              />
-            </>
-          ) : (
-            `${partido.resultado_equipo_1}-${partido.resultado_equipo_2}`
-          )}
-        </p>
-      </div>
-
-      <div className="contenedor-button">
-        {isEditing ? (
-          <>
+          </p>
+          <div className="contenedor-button">
             <button onClick={handleSave}>Guardar</button>
             <button onClick={handleCancel}>Cancelar</button>
-          </>
-        ) : (
-          <>
+          </div>
+        </>
+      ) : (
+        <>
+          <p>
+            <strong>Equipos:</strong> {partido.equipo_1} vs {partido.equipo_2}
+          </p>
+          <p>
+            <strong>Resultado:</strong>{" "}
+            {partido.resultado_equipo_1 !== null &&
+            partido.resultado_equipo_1 !== undefined
+              ? partido.resultado_equipo_1
+              : "-"}{" "}
+            -{" "}
+            {partido.resultado_equipo_2 !== null &&
+            partido.resultado_equipo_2 !== undefined
+              ? partido.resultado_equipo_2
+              : "-"}
+          </p>
+          <p>
+            <strong>Fecha:</strong>{" "}
+            {partido.fecha.replace("T", " ").slice(0, 16)}
+          </p>
+          <p>
+            <strong>Estado:</strong> {partido.estado}
+          </p>
+          <p>
+            <strong>Tipo de Partido:</strong> {partido.tipo_partido}
+          </p>
+          <div className="contenedor-button">
             <button onClick={() => setIsEditing(true)}>Editar</button>
             <button onClick={() => onDelete(partido.id)}>Eliminar</button>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </li>
   );
 };
@@ -142,9 +146,6 @@ EditablePartido.propTypes = {
     id: PropTypes.number.isRequired,
     equipo_1: PropTypes.string.isRequired,
     equipo_2: PropTypes.string.isRequired,
-    fecha: PropTypes.string.isRequired,
-    estado: PropTypes.string.isRequired,
-    tipo_partido: PropTypes.string.isRequired,
     resultado_equipo_1: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
@@ -153,6 +154,9 @@ EditablePartido.propTypes = {
       PropTypes.string,
       PropTypes.number,
     ]),
+    fecha: PropTypes.string.isRequired,
+    estado: PropTypes.string.isRequired,
+    tipo_partido: PropTypes.string.isRequired,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
