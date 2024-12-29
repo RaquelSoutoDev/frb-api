@@ -10,6 +10,10 @@ body {
   padding: 0;
 }
 
+.p-cargando {
+  text-align: center;
+}
+
 .app_h1,
 .app_h2,
 .app_h3 {

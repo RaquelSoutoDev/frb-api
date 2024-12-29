@@ -17,7 +17,7 @@ const Partidos = () => {
     const fetchPartidos = async () => {
       try {
         const data = await getPartidos();
-        setPartidos(data); // No se ajustan las fechas, se guardan tal cual
+        setPartidos(data); 
       } catch (error) {
         console.error("Error al obtener los partidos:", error);
       } finally {
@@ -85,7 +85,7 @@ const Partidos = () => {
   }, [partidos, filtros]);
 
   if (loading) {
-    return <p>Cargando partidos...</p>;
+    return <p className="p-cargando">Cargando partidos...</p>;
   }
 
   return (
