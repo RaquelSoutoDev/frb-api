@@ -194,7 +194,7 @@ const Partidos = () => {
           ))}
         </ul>
         ) : (
-          <p className="mensaje-no-encontrado">No se encontró el partido</p>
+          <p className="mensaje-no-encontrado">No se encontró ningún partido</p>
         )}
         
       </div>
