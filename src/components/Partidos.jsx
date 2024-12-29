@@ -12,12 +12,15 @@ const Partidos = () => {
     fecha: "",
   });
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [showCrearPartido, setShowCrearPartido] = useState(!isMobile);
+  const [showFiltros, setShowFiltros] = useState(!isMobile);
 
   useEffect(() => {
     const fetchPartidos = async () => {
       try {
         const data = await getPartidos();
-        setPartidos(data); 
+        setPartidos(data);
       } catch (error) {
         console.error("Error al obtener los partidos:", error);
       } finally {
@@ -26,6 +29,19 @@ const Partidos = () => {
     };
 
     fetchPartidos();
+
+    const handleResize = () => {
+      const isNowMobile = window.innerWidth <= 768;
+      setIsMobile(isNowMobile);
+      setShowCrearPartido(!isNowMobile);
+      setShowFiltros(!isNowMobile);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const handleEliminar = async (id) => {
@@ -92,51 +108,75 @@ const Partidos = () => {
     <div className="contenedor-principal">
       <div className="contenedor-izquierda">
         <div className="contenedor-formulario">
-          <h3>Crear Partido</h3>
-          <FormPartido setPartidos={setPartidos} />
+          {isMobile && (
+            <button
+              className="toggle-button"
+              onClick={() => setShowCrearPartido(!showCrearPartido)}
+            >
+              {showCrearPartido ? "Ocultar Crear Partido" : "Mostrar Crear Partido"}
+            </button>
+          )}
+          {showCrearPartido && (
+            <>
+              <h3>Crear Partido</h3>
+              <FormPartido setPartidos={setPartidos} />
+            </>
+          )}
         </div>
 
         <div className="contenedor-filtros">
-          <h3>Filtros</h3>
-          <select
-            name="estado"
-            value={filtros.estado}
-            onChange={handleFilterChange}
-          >
-            <option value="">Todos los estados</option>
-            <option value="Jugado">Jugado</option>
-            <option value="Pendiente">Pendiente</option>
-            <option value="Pospuesto">Pospuesto</option>
-            <option value="Cancelado">Cancelado</option>
-          </select>
+          {isMobile && (
+            <button
+              className="toggle-button"
+              onClick={() => setShowFiltros(!showFiltros)}
+            >
+              {showFiltros ? "Ocultar Filtros" : "Mostrar Filtros"}
+            </button>
+          )}
+          {showFiltros && (
+            <>
+              <h3>Filtros</h3>
+              <select
+                name="estado"
+                value={filtros.estado}
+                onChange={handleFilterChange}
+              >
+                <option value="">Todos los estados</option>
+                <option value="Jugado">Jugado</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Pospuesto">Pospuesto</option>
+                <option value="Cancelado">Cancelado</option>
+              </select>
 
-          <select
-            name="tipo_partido"
-            value={filtros.tipo_partido}
-            onChange={handleFilterChange}
-          >
-            <option value="">Todos los tipos</option>
-            <option value="Amistoso">Amistoso</option>
-            <option value="Liga-IMD">Liga-IMD</option>
-            <option value="Torneo">Torneo</option>
-          </select>
+              <select
+                name="tipo_partido"
+                value={filtros.tipo_partido}
+                onChange={handleFilterChange}
+              >
+                <option value="">Todos los tipos</option>
+                <option value="Amistoso">Amistoso</option>
+                <option value="Liga-IMD">Liga-IMD</option>
+                <option value="Torneo">Torneo</option>
+              </select>
 
-          <input
-            type="text"
-            name="equipo"
-            placeholder="Buscar por equipo"
-            value={filtros.equipo}
-            onChange={handleFilterChange}
-          />
+              <input
+                type="text"
+                name="equipo"
+                placeholder="Buscar por equipo"
+                value={filtros.equipo}
+                onChange={handleFilterChange}
+              />
 
-          <input
-            type="date"
-            name="fecha"
-            value={filtros.fecha}
-            onChange={handleFilterChange}
-          />
+              <input
+                type="date"
+                name="fecha"
+                value={filtros.fecha}
+                onChange={handleFilterChange}
+              />
 
-          <button onClick={handleResetFiltros}>Resetear filtros</button>
+              <button onClick={handleResetFiltros}>Resetear filtros</button>
+            </>
+          )}
         </div>
       </div>
 
