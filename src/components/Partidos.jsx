@@ -182,7 +182,8 @@ const Partidos = () => {
 
       <div className="contenedor-lista">
         <h2>Partidos</h2>
-        <ul>
+        {filteredPartidos.length > 0 ? (
+          <ul>
           {filteredPartidos.map((partido) => (
             <EditablePartido
               key={partido.id}
@@ -192,6 +193,10 @@ const Partidos = () => {
             />
           ))}
         </ul>
+        ) : (
+          <p className="mensaje-no-encontrado">No se encontró el partido</p>
+        )}
+        
       </div>
     </div>
   );
