@@ -67,7 +67,17 @@ const EditablePartido = ({ partido, onUpdate, onDelete }) => {
             <input
               type="datetime-local"
               name="fecha"
-              value={editedPartido.fecha.slice(0, 16)} 
+              value={editedPartido.fecha.slice(0, 16)}
+              onChange={handleChange}
+              required
+            />
+          </p>
+          <p>
+            <strong>Ubicación:</strong>
+            <input
+              type="text"
+              name="ubicacion"
+              value={editedPartido.ubicacion}
               onChange={handleChange}
               required
             />
@@ -125,6 +135,16 @@ const EditablePartido = ({ partido, onUpdate, onDelete }) => {
             <strong>Fecha:</strong>{" "}
             {partido.fecha.replace("T", " ").slice(0, 16)}
           </p>
+          <p className="p-enlace">
+            <strong>Ubicación:</strong> {partido.ubicacion}{" "}
+            <a 
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(partido.ubicacion)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            >
+              Ver en Google Maps
+            </a>
+          </p>
           <p>
             <strong>Estado:</strong> {partido.estado}
           </p>
@@ -157,6 +177,7 @@ EditablePartido.propTypes = {
     fecha: PropTypes.string.isRequired,
     estado: PropTypes.string.isRequired,
     tipo_partido: PropTypes.string.isRequired,
+    ubicacion: PropTypes.string.isRequired,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,

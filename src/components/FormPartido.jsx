@@ -71,6 +71,14 @@ const FormPartido = ({ setPartidos }) => {
         onChange={handleChange}
         required
       />
+      <input
+        type="text"
+        name="ubicacion"
+        placeholder="Ubicación"
+        value={form.ubicacion}
+        onChange={handleChange}
+        required 
+      />
       <select name="estado" value={form.estado} onChange={handleChange}>
         <option value="Pendiente">Pendiente</option>
         <option value="Jugado">Jugado</option>

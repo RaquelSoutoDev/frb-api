@@ -10,6 +10,7 @@ const Partidos = () => {
     tipo_partido: "",
     equipo: "",
     fecha: "",
+    ubicacion: "",
   });
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -89,16 +90,20 @@ const Partidos = () => {
   const filteredPartidos = useMemo(() => {
     return partidos.filter((partido) => {
       const matchEstado = !filtros.estado || partido.estado === filtros.estado;
-      const matchTipo =
-        !filtros.tipo_partido || partido.tipo_partido === filtros.tipo_partido;
+      const matchTipo = !filtros.tipo_partido || partido.tipo_partido === filtros.tipo_partido;
       const matchEquipo =
         !filtros.equipo ||
         partido.equipo_1.toLowerCase().includes(filtros.equipo.toLowerCase()) ||
         partido.equipo_2.toLowerCase().includes(filtros.equipo.toLowerCase());
       const matchFecha = !filtros.fecha || partido.fecha.startsWith(filtros.fecha);
-      return matchEstado && matchTipo && matchEquipo && matchFecha;
+      const matchUbicacion =
+        !filtros.ubicacion ||
+        (partido.ubicacion && partido.ubicacion.toLowerCase().includes(filtros.ubicacion.toLowerCase()));
+  
+      return matchEstado && matchTipo && matchEquipo && matchFecha && matchUbicacion;
     });
   }, [partidos, filtros]);
+  
 
   if (loading) {
     return <p className="p-cargando">Cargando partidos...</p>;
@@ -172,6 +177,13 @@ const Partidos = () => {
                 name="fecha"
                 value={filtros.fecha}
                 onChange={handleFilterChange}
+              />
+              <input
+                type="text"
+                name="ubicacion"
+                placeholder="Buscar por ubicación"
+                value={filtros.ubicacion}
+                onChange={handleFilterChange} 
               />
 
               <button onClick={handleResetFiltros}>Resetear filtros</button>
